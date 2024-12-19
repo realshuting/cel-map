@@ -1,0 +1,36 @@
+
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: dns-config
+spec:
+  rules:
+  - name: dns-config
+	match:
+  	any:
+  	- resources:
+      	kinds:
+      	- Pod
+      	operations:
+      	- CREATE
+      	namespaceSelector:
+        	matchExpressions:
+        	- key: "system"
+          	operator: DoesNotExist
+	exclude:
+  	any:
+    	- resources:
+        	annotations:
+          	"splunk8s.io.dns/disable-config": "*"
+        	kinds:
+          	- Pod
+	context:
+	- name: dnsConfig
+  	variable:
+    	value: {{ toYaml .Values.dnsOptions | nindent 10 }}
+    	jmesPath: items(@,'name','value')
+	mutate:
+  	patchStrategicMerge:
+    	spec:
+      	+(dnsConfig):
+        	options: "{{ dnsConfig }}"

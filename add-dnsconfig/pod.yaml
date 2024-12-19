@@ -1,0 +1,54 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: nginx
+    app: nginx
+  name: nginx
+  namespace: default
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+  # dnsConfig:
+  #   options:
+  #   - name: my-name
+  #     value: my-value
+  #   # env:
+    #   - name: JAEGER_AGENT_HOST
+    #     valueFrom:
+    #       fieldRef:
+    #         fieldPath: status.hostIP
+    #   - name: fake_name
+    #     value: fake_value
+  # - name: mypod
+  #   image: nginx
+    
+---
+# Object.spec.containers{
+#                             name: c.name,
+#                             env: object.spec.containers.env.filter(c, c.name != "JAEGET_AGENT_HOST")
+#                       }
+#                     )
+# ---
+#         Object{
+#             spec: Object.spec{
+#                 containers: object.spec.containers{
+#                     object.spec.containers.filter(c, c.name == "sidecar")
+#                     .map(c, Object.spec.containers.item{
+#                         ?env: optional.none()
+#                     })
+#                 }
+#             }
+#         }
+# ---
+#         Object{
+#         spec: Object.spec{
+#           containers: object.spec.containers.filter(c, !has(c.resources)).map(c, 
+#             {
+#                 name: c.name,
+#                 resources: {#default resources settings}
+#             }
+#         }
+#       }
